@@ -13,7 +13,10 @@
         <div class="wrap-box">
           <div class="left-925">
             <div class="goods-box clearfix">
-              <div class="pic-box"></div>
+              <div class="pic-box" v-for="(item, index) in imglist" :key="item.id">
+
+                <!-- <img :src=" item.original_path" alt=""> -->
+              </div>
               <div class="goods-spec">
                 <h1>{{ goodsinfo.title }}</h1>
                 <p class="subtitle">{{ goodsinfo.sub_title }}</p>
