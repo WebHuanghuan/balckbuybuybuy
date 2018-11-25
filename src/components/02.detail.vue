@@ -88,11 +88,11 @@
                     </div>
                     <div class="conn-box">
                       <div class="editor">
-                        <textarea id="txtContent" name="txtContent" sucmsg=" " datatype="*10-1000" nullmsg="请填写评论内容！"></textarea>
+                        <textarea v-model.trim="comment" id="txtContent" name="txtContent" sucmsg=" " datatype="*10-1000" nullmsg="请填写评论内容！"></textarea>
                         <span class="Validform_checktip"></span>
                       </div>
-                      <div class="subcon">
-                        <input id="btnSubmit" name="submit" type="submit" value="提交评论" class="submit">
+                      <div class="subcon"> 
+                        <input @click="submitComment" id="btnSubmit" name="submit" type="submit" value="提交评论" class="submit">
                         <span class="Validform_checktip"></span>
                       </div>
                     </div>
@@ -116,7 +116,7 @@
                   <div class="page-box" style="margin: 5px 0px 0px 62px;">
                     <div id="pagination" class="digg">
                       <!-- 使用iView的分页组件 -->
-                      <Page @on-change='pageChange' :total="totalcount" show-sizer show-elevator placement='top' :page-size-opts='[15, 30, 45, 60]' :page-size='pageSize' />
+                      <Page :current='pageIndex' @on-change='pageChange' :total="totalcount" show-sizer show-elevator placement='top' :page-size-opts='[15, 30, 45, 60]' :page-size='pageSize' />
                     </div>
                   </div>
                 </div>
@@ -159,6 +159,8 @@
 </template>
 
 <script>
+// 导入jquery插件
+import $ from "jquery";
 // 暴露出去
 export default {
   name: "detail",
@@ -183,7 +185,9 @@ export default {
       // 评论内容
       comments: [],
       // 总评论数
-      totalcount: 0
+      totalcount: 0,
+      // 发表评论
+      comment: ""
     };
   },
   // 事件
@@ -194,7 +198,7 @@ export default {
       this.buyCount = 1;
       // 保存数据
       this.artID = this.$route.params.id;
-      console.log(this.artID);
+      // console.log(this.artID);
 
       // 调用接口 获取详情数据 axios
       this.$axios
@@ -225,7 +229,7 @@ export default {
         )
         .then(result => {
           // handle success
-          console.log(result);
+          // console.log(result);
           this.comments = result.data.message;
           this.totalcount = result.data.totalcount;
         });
@@ -235,6 +239,37 @@ export default {
       // console.log(pageIndex);
       this.pageIndex = pageIndex;
       this.getComments();
+    },
+    // 评论内容
+    submitComment() {     
+      //非空判断
+      if (this.comment == "") {
+        // 提示
+        this.$Message.warning("输入内容不能为空!");
+        // return;
+      } else {
+        // 调用接口 获取提交评论数据 axios
+        this.$axios
+          .post(`site/validate/comment/post/goods/${this.artID}`, {
+            commenttxt: this.comment
+          })
+          .then(result => {
+            console.log(result);
+            // 判断是非成功
+            if (result.data.status == 0) {
+              // 提示用户
+              this.$Message.success(result.data.message);
+              // 清空文本框的内容
+              this.comment = "";
+              // 初始化页面为1才能看到自己的评论
+              this.pageIndex = 1;
+              // 重新获取评论信息
+              this.getComments();
+            } else {
+
+            }
+          });
+      }
     }
   },
   // 生命周期函数

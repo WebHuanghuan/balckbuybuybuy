@@ -3,6 +3,10 @@ import App from "./App.vue";
 
 Vue.config.productionTip = false;
 
+// 把jq导入到main.js中 挂载到原型里面
+import $ from 'jquery';
+Vue.prototype.$$ = $;
+
 // 导入iview框架
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
@@ -22,6 +26,8 @@ import axios from "axios";
 // 设置到vue的原型上 那么所有vue实例出来的对象和组件都能够共享这个属性
 // 一般来说设置到原型上的属性vue中会使用$作为前缀用来区分普通的属性
 Vue.prototype.$axios = axios
+// 使用axios的方式设置基础地址
+axios.defaults.baseURL = 'http://111.230.232.110:8899/';
 
 // 导入路由
 import VueRouter from "vue-router";
