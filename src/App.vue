@@ -28,7 +28,7 @@
                         <i class="iconfont icon-cart"></i>购物车(
                         <span id="shoppingCartCount">
                             <span>{{ $store.getters.totalCount }}</span>
-                        </span>)
+                        </span>)w
                        </router-link>
                         <!-- </a> -->
                 </div>
