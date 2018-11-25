@@ -3,6 +3,10 @@ import App from "./App.vue";
 
 Vue.config.productionTip = false;
 
+// 导入ProductZoomer 图片放大镜
+import ProductZoomer from 'vue-product-zoomer'
+Vue.use(ProductZoomer)
+
 // 把jq导入到main.js中 挂载到原型里面
 import $ from 'jquery';
 Vue.prototype.$$ = $;
@@ -76,10 +80,31 @@ Vue.filter("shortTimePlus", value => {
   return moment(value).format("YYYY-MM-DD HH:mm:ss");
 });
 
+// 导入Vuex
+import Vuex from 'vuex'
+Vue.use(Vuex)
+// 实例化仓库对象
+const store = new Vuex.Store({
+  // 状态
+  state: {
+    count: 0
+  },
+  // 数据改变的方法
+  mutations: {
+    increment (state) {
+      // console.log('触发了');
+      state.count++
+    }
+  }
+})
+
 // 创建和挂载根实例。
 // 记得要通过 router 配置参数注入路由，
 // 从而让整个应用都有路由功能
 new Vue({
   render: h => h(App),
-  router
+  // 传入路有对象
+  router,
+  // 需要把store传递给Vue实例 这样在子组件才可以使用￥store
+  store
 }).$mount("#app");

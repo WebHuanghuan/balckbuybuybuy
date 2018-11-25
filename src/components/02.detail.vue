@@ -13,9 +13,13 @@
         <div class="wrap-box">
           <div class="left-925">
             <div class="goods-box clearfix">
-              <div class="pic-box" v-for="(item, index) in imglist" :key="item.id">
-
-                <!-- <img :src=" item.original_path" alt=""> -->
+              <!-- 放大镜组件 -->
+              <div class="pic-box">
+                <ProductZoomer  
+                    v-if="images.normal_size.length!=0" 
+                    :base-images="images"
+                    :base-zoomer-options="zoomerOptions"
+                 />
               </div>
               <div class="goods-spec">
                 <h1>{{ goodsinfo.title }}</h1>
@@ -55,7 +59,7 @@
                     <dd>
                       <div id="buyButton" class="btn-buy">
                         <button onclick="cartAdd(this,'/',1,'/shopping.html');" class="buy">立即购买</button>
-                        <button onclick="cartAdd(this,'/',0,'/cart.html');" class="add">加入购物车</button>
+                        <button @click="$store.commit('increment')" class="add">加入购物车</button>
                       </div>
                     </dd>
                   </dl>
@@ -91,7 +95,7 @@
                         <textarea v-model.trim="comment" id="txtContent" name="txtContent" sucmsg=" " datatype="*10-1000" nullmsg="请填写评论内容！"></textarea>
                         <span class="Validform_checktip"></span>
                       </div>
-                      <div class="subcon"> 
+                      <div class="subcon">
                         <input @click="submitComment" id="btnSubmit" name="submit" type="submit" value="提交评论" class="submit">
                         <span class="Validform_checktip"></span>
                       </div>
@@ -187,7 +191,24 @@ export default {
       // 总评论数
       totalcount: 0,
       // 发表评论
-      comment: ""
+      comment: "",
+      images: {
+        // required
+        normal_size: [
+          // { id: "unique id", url: "image url" },
+          // { id: "unique id", url: "image url" }
+        ]
+      },
+      //  放大镜设置
+      zoomerOptions: {
+        zoomFactor: 4,
+        pane: "container-round",
+        hoverDelay: 300,
+        namespace: "inline-zoomer",
+        move_by_click: true,
+        scroll_items: 5,
+        choosed_thumb_border_color: "#bbdefb"
+      }
     };
   },
   // 事件
@@ -214,6 +235,15 @@ export default {
           this.goodsinfo = result.data.message.goodsinfo;
           // 图片列表
           this.imglist = result.data.message.imglist;
+          // 设置给放大镜的数据即可
+          this.images.normal_size = [];
+          // 循环添加数据
+          this.imglist.forEach(v=>{
+            this.images.normal_size.push({
+              id:v.id,
+              url:v.original_path
+            })
+          });
         });
       // 调用获取评论的方法
       this.getComments();
@@ -241,7 +271,7 @@ export default {
       this.getComments();
     },
     // 评论内容
-    submitComment() {     
+    submitComment() {
       //非空判断
       if (this.comment == "") {
         // 提示
@@ -266,7 +296,6 @@ export default {
               // 重新获取评论信息
               this.getComments();
             } else {
-
             }
           });
       }
@@ -280,8 +309,10 @@ export default {
   // 侦听器
   watch: {
     $route(newVal, oldVal) {
+      // 设置图片数组为空 让放大镜组件重新生成
+      this.images.normal_size = [];
       // 初始化数据
-      this.initData();
+       this.initData();
     }
   }
 };
@@ -291,5 +322,12 @@ export default {
 .tab-content img {
   display: block;
   width: 100%;
+}
+.inline-zoomer-zoomer-box {
+  width: 395px;
+}
+.thumb-list img{
+    width: 160px;
+    height: 160px;
 }
 </style>
