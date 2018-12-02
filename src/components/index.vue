@@ -50,7 +50,9 @@
                     <!--/幻灯片-->
                     <div class="left-220">
                         <ul class="side-img-list">
+                        
                             <li v-for="(item, index) in toplist" :key="item.id">
+                                 <router-link :to="`/detail/`+item.id">
                                 <div class="img-box">
                                     <label>{{index+1}}</label>
                                     <img :src="item.img_url">
@@ -60,7 +62,9 @@
                                     <!-- 过滤器过滤 -->
                                     <span>{{item.add_time | shortTime}}</span>
                                 </div>
+                                </router-link>
                             </li>
+                           
                         </ul>
                     </div>
                 </div>
