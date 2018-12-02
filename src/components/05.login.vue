@@ -82,7 +82,7 @@ export default {
             password: this.password
           })
           .then(result => {
-            // console.log(result);
+            // //console.log(result);
             // 登录成功
             if (result.data.status === 0) {
               this.$Message.success(result.data.message);

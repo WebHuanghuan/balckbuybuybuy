@@ -194,7 +194,7 @@
 export default {
   name: "app",
   created() {
-    // console.log(this.$store.state.count);
+    // //console.log(this.$store.state.count);
   },
   //   事件
   methods: {
@@ -202,13 +202,13 @@ export default {
         //   调用登出接口即可
         this.$axios.get(`site/account/logout`)
         .then(result=> {
-            // console.log(result);
+            // //console.log(result);
             if(result.data.status===0) {
                 this.$Message.success(result.data.message);
                 // 编程式导航，去首页
                 this.$router.push('/index');
                 // 修改vuex中的登录字段为false
-                this.$store.commit('changLogin',false)
+                this.$store.commit('changeLogin',false)
             }
         })
       }

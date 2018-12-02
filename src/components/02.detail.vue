@@ -224,7 +224,7 @@ export default {
       this.buyCount = 1;
       // 保存数据
       this.artID = this.$route.params.id;
-      // console.log(this.artID);
+      // //console.log(this.artID);
 
       // 调用接口 获取详情数据 axios
       this.$axios
@@ -233,7 +233,7 @@ export default {
         )
         .then(result => {
           // handle success
-          // console.log(result);
+          // //console.log(result);
           // 热门推荐
           this.hotgoodslist = result.data.message.hotgoodslist;
           // 商品详情
@@ -264,14 +264,14 @@ export default {
         )
         .then(result => {
           // handle success
-          // console.log(result);
+          // //console.log(result);
           this.comments = result.data.message;
           this.totalcount = result.data.totalcount;
         });
     },
     // 页码改变
     pageChange(pageIndex) {
-      // console.log(pageIndex);
+      // //console.log(pageIndex);
       this.pageIndex = pageIndex;
       this.getComments();
     },
@@ -289,7 +289,7 @@ export default {
             commenttxt: this.comment
           })
           .then(result => {
-            console.log(result);
+            //console.log(result);
             // 判断是非成功
             if (result.data.status == 0) {
               // 提示用户
@@ -324,7 +324,7 @@ export default {
   },
   // 生命周期函数
   created() {
-    console.log(this.$route.params);
+    //console.log(this.$route.params);
     this.initData();
   },
   // 侦听器

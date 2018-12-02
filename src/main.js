@@ -52,6 +52,9 @@ import login from "./components/05.login.vue";
 import payMoney from "./components/06.payMoney.vue";
 import paySuccess from "./components/07.paySuccess.vue";
 import userCenter from "./components/08.userCenter.vue";
+import orderList from "./components/09.orderList.vue";
+import orderDetail from "./components/10.orderDetail.vue";
+import orderIndex from "./components/11.orderIndex.vue";
 
 //  定义路由
 // 每个路由应该映射一个组件。 其中"component" 可以是
@@ -98,26 +101,52 @@ const routes = [
   {
     path: "/userCenter",
     component:userCenter,
-    meta: { checkLogin:true }
+    meta: { checkLogin:true },
+    children: [
+      {
+        path:'',
+        redirect:'orderIndex'
+      },
+      {
+        path:'orderIndex',
+        component:orderIndex
+      },
+      {
+        path:'orderList',
+        component:orderList
+      },
+      {
+        path:'orderDetail/:orderId',
+        component:orderDetail
+      }
+    ]
   }
 ];
 
-// 创建 router 实例，然后传 `routes` 配置
-const router = new VueRouter({
-  routes // (缩写) 相当于 routes: routes
-});
+// 实例化路由对象
+let router = new VueRouter({
+  routes,
+  // 专门用来处理滚动的参数
+  // 路由的 滚动行为中 的一个参数
+  scrollBehavior(to, from, savedPosition) {
+    // return 期望滚动到哪个的位置
+    return { x: 0, y: 0 }
+  },
+  // 去除#
+  mode: 'history'
+})
 
 // 增加导航守卫（回调函数 每次路由改变的时候触发）
 router.beforeEach((to, from, next) => {
-  // console.log('触发守卫了');
-  // console.log(to);
-  // console.log(from);
+  // //console.log('触发守卫了');
+  // //console.log(to);
+  // //console.log(from);
   // if (to.path.indexOf('/order')!=-1) {
     if (to.meta.checkLogin==true) {
     // 正要去订单页
     // 必须先判断登录
     axios.get("site/account/islogin").then(result => {
-      //   console.log(result);
+      //   //console.log(result);
       if (result.data.code == "nologin") {
         // 提示用户
         Vue.prototype.$Message.warning("请先登录");
@@ -133,6 +162,14 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+
+// // 路由跳转完毕触发
+// 这种方法 是使用导航守卫的 回调函数实现 
+// router.afterEach((to, from) => {
+//   // 页面滚到顶部即可
+//   window.scrollTo(0,0);
+// })
 
 // 注册全局过滤器 方便使用
 // 导入moment
@@ -171,7 +208,7 @@ const store = new Vuex.Store({
   // Vuex的计算属性
   getters: {
     totalCount(state) {
-      // console.log(state);
+      // //console.log(state);
       // 通过state获取内部的数据
       // 计算并返回
 
@@ -189,15 +226,15 @@ const store = new Vuex.Store({
     // state就是上面的数据state
     // 测试用的方法
     // increment (state,obj) {
-    // console.log('触发了');
-    // console.log(obj);
+    // //console.log('触发了');
+    // //console.log(obj);
     // state.count+=n;
     // state.count+=m;
     // }
     // 往购物车添加数据的方法 2=>to
     // 约定对象的属性名 goodId(商品的id) goodNum(商品的个数)
     add2Cart(state, obj) {
-      // console.log(obj);
+      // //console.log(obj);
       // 判断商品是否存在
       // 存在
       if (state.cartData[obj.goodId] != undefined) {
@@ -215,10 +252,10 @@ const store = new Vuex.Store({
         Vue.set(state.cartData, obj.goodId, obj.goodNum);
       }
       // 打印内容
-      // console.log(state);
+      // //console.log(state);
     },
     updateCartData(state, obj) {
-      // console.log(obj);
+      // //console.log(obj);
       // 接收到数据直接赋值 因为在03.shopCart.vue 已经把数据处理好了
       // 直接赋值
       state.cartData = obj;
@@ -226,7 +263,7 @@ const store = new Vuex.Store({
     // 删除某一条数据的方法
     // 已经被watch中的代码实现,只是为了演示Vue.delete这个方法
     delGoodsById(state, id) {
-      // console.log(id);
+      // //console.log(id);
       // 根据id删除state中的数据
       // delete state.cartData[id];
       // delete 删除的属性 vue无法跟踪
@@ -234,7 +271,7 @@ const store = new Vuex.Store({
       // 必须使用vue.delete才可以同步更新视图
       Vue.delete(state.cartData, id);
     },
-    changLogin(state, isLogin) {
+    changeLogin(state, isLogin) {
       state.isLogin = isLogin;
     }
   }
@@ -255,11 +292,11 @@ new Vue({
   store,
   // 生命周期函数
   created() {
-    // console.log('最顶级的被创建了');
+    // //console.log('最顶级的被创建了');
     // 调用登录判断接口
     // 根据结果判断是否登录
     axios.get("site/account/islogin").then(result => {
-      // console.log(result);
+      // //console.log(result);
       if (result.data.code == "nologin") {
         // 提示用户
         Vue.prototype.$Message.warning("请先登录");

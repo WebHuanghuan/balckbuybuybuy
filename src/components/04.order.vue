@@ -322,7 +322,7 @@ export default {
   data: function() {
     // 自定义校验规则 函数 会被element-ui内部调用
     var validateMobile = (rule, value, callback) => {
-      //  console.log(value)
+      //  //console.log(value)
       // 空值判断
       if (value === "") {
         callback(new Error("请输入手机号"));
@@ -341,7 +341,7 @@ export default {
     };
     // 自定义校验规则 函数 会被element-ui内部调用
     var validateEmail = (rule, value, callback) => {
-      //  console.log(value)
+      //  //console.log(value)
       // 空值判断
       if (value === "") {
         callback(new Error("请输入邮箱地址"));
@@ -360,7 +360,7 @@ export default {
     };
     // 自定义校验规则 函数 会被element-ui内部调用
     var validatePostCode = (rule, value, callback) => {
-      //  console.log(value)
+      //  //console.log(value)
       // 空值判断
       if (value === "") {
         callback(new Error("请输入邮编"));
@@ -432,7 +432,7 @@ export default {
   },
   methods: {
     selectedArea(newArea) {
-      // console.log(newArea);
+      // //console.log(newArea);
       this.ruleForm.area = newArea;
     },
     submit(formName) {
@@ -448,7 +448,7 @@ export default {
           this.$axios
             .post("site/validate/order/setorder", this.ruleForm)
             .then(result => {
-              console.log(result);
+              //console.log(result);
               this.$Message.success("订单提交成功,请等待!");
               this.$router.push("/payMoney/"+result.data.message.orderid);
               this.goodsList.forEach(v=> {
@@ -465,20 +465,20 @@ export default {
   // 获取传递过来的id调用接口
   created() {
     // 路由对象可以用来跳转页面
-    // console.log(this.$route);
+    // //console.log(this.$route);
     // 路由跳转 携带的信息
-    console.log(this.$route);
+    //console.log(this.$route);
     this.ids = this.$route.params.ids;
     // 调用接口
     this.$axios
       .get(`site/validate/order/getgoodslist/${this.ids}`)
       .then(result => {
-        console.log(result);
+        //console.log(result);
         // buycount服务器是不知道的 我们要人为的设置
         this.goodsList = result.data.message;
         // 动态的修改buycount的值
         result.data.message.forEach(v => {
-          console.log(v);
+          //console.log(v);
 
           // 通过Vuex获取购买数量
           // 因为buycount这个字段一直都在所以不需要Vue.set
@@ -489,8 +489,8 @@ export default {
           // 累加总金额
           this.totalPrice += v.buycount * v.sell_price;
         });
-        // console.log(this.goodsList);
-        // console.log(result);
+        // //console.log(this.goodsList);
+        // //console.log(result);
       });
   },
   // 组件内注册
@@ -499,7 +499,7 @@ export default {
   //   beforeCreate() { // 虽然比created 早了一些 但还是 一闪而过
   // // 查询是否登录
   // this.$axios.get("site/account/islogin").then(result => {
-  //   //   console.log(result);
+  //   //   //console.log(result);
   //   if (result.data.code == "nologin") {
   //     // 提示用户
   //     this.$Message.warning("请先登录");

@@ -106,19 +106,19 @@ export default {
     [VueQrcode.name]: VueQrcode
   },
   created() {
-    // console.log(this.$route);
+    // //console.log(this.$route);
     this.orderId = this.$route.params.orderId;
     this.$axios
       .get(`site/validate/order/getorder/` + this.orderId)
       .then(result => {
-        console.log(result);
+        //console.log(result);
         this.orderInfo = result.data.message[0];
       });
     this.timeID = setInterval(() => {
       this.$axios
         .get(`site/validate/order/getorder/` + this.orderId)
         .then(result => {
-          console.log(result);
+          //console.log(result);
           if (result.data.message[0].status === 2) {
             this.$Message.success("恭喜支付成功!");
             this.$router.push("/paySuccess");

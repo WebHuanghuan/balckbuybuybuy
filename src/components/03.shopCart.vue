@@ -264,11 +264,11 @@ export default {
       ids += ",";
     }
     // 取消最后一个逗号
-    // console.log(ids.slice(0,ids.length-1));
+    // //console.log(ids.slice(0,ids.length-1));
     ids = ids.slice(0, ids.length - 1);
     // 调用接口
     this.$axios.get(`site/comment/getshopcargoods/${ids}`).then(result => {
-      // console.log(result);
+      // //console.log(result);
       // return;
       // 服务器返回的数据中是没有个数的 所以要自行拼接
       result.data.message.forEach(v => {
@@ -276,7 +276,7 @@ export default {
         // 增加一个 是否被选择的字段 用来切换页面中的switch 开关
         v.isSelected = true;
       });
-      // console.log(result);
+      // //console.log(result);
       this.goodsList = result.data.message;
     });
   },
@@ -285,14 +285,14 @@ export default {
     goodsList: {
       // 引用类型 两次的值都是一样的
       handler: function(val, oldVal) {
-        // console.log(val);
-        // console.log(oldVal);
+        // //console.log(val);
+        // //console.log(oldVal);
 
         let obj = {};
         val.forEach(v => {
           obj[v.id] = v.buycount;
         });
-        // console.log(obj);
+        // //console.log(obj);
         // 同步修改Vuex中的数据
         this.$store.commit("updateCartData", obj);
       },

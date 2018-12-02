@@ -135,8 +135,8 @@ export default {
     //    这里要用箭头函数 绑定上下文中的this
     // .then(function(result){})
        .then(result=> {
-    //   console.log(this);
-        // console.log(result);
+    //   //console.log(this);
+        // //console.log(result);
         this.catelist = result.data.message.catelist;
         this.sliderlist = result.data.message.sliderlist;
         this.toplist = result.data.message.toplist;
@@ -147,8 +147,8 @@ export default {
     //    这里要用箭头函数 绑定上下文中的this
     // .then(function(result){})
        .then(result=> {
-    //   console.log(this);
-        console.log(result);
+    //   //console.log(this);
+        //console.log(result);
         this.groupList = result.data.message
     });
   }
